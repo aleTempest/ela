@@ -6,49 +6,42 @@ vim.call('plug#begin')
   Plug 'nvim-mini/mini.pairs'
   Plug 'nvim-mini/mini.move'
   Plug 'nvim-mini/mini.statusline'
-
+  
   Plug 'nvim-lua/plenary.nvim'
   Plug('nvim-telescope/telescope.nvim', { tag = '0.1.8' })
-
+  
   Plug'maxmx03/solarized.nvim'
-
+  
+  Plug 'folke/which-key.nvim'
   Plug('nvim-treesitter/nvim-treesitter', { branch = 'master' })
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/mason.nvim'
+  Plug 'williamboman/mason-lspconfig.nvim'
+  
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'L3MON4D3/LuaSnip'
+  Plug 'saadparwaiz1/cmp_luasnip'
 vim.call('plug#end')
+
+local hostname = vim.fn.hostname()
+local winDesktopName = "DESKTOP-C3BF2T4"
 
 vim.cmd[[colorscheme solarized]]
 
-vim.g.mapleader = " " 
+if hostname ~= winDesktopName then
+  vim.o.background = "light"
+end
 
--- {{ Mini }}
-require'mini.pairs'.setup()
-require'mini.move'.setup()
-require'mini.statusline'.setup()
+vim.g.mapleader = " "
 
--- {{{ Telescope }}}
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = 'Telescope buffers' })
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+require'plugins.telescope'.setup()
+require'plugins.mini'.setup()
+require'plugins.treesitter'.setup()
+require'plugins.lsp'.setup()
 
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "python" },
-  sync_install = false,
-  auto_install = true,
-  ignore_install = { "javascript" },
-  highlight = {
-    enable = true,
-    disable = { "c", "rust" },
-    disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-    additional_vim_regex_highlighting = false,
-  },
-}
 
 -- Sincronizar el clipboard de nvim con el del sistema
 vim.o.clipboard = "unnamedplus"
@@ -58,13 +51,13 @@ vim.o.number = true
 vim.o.relativenumber = true
 
 -- Tabs and Indentation
-vim.o.tabstop = 2         
-vim.o.softtabstop = 2     
-vim.o.expandtab = true    
-vim.o.smartindent = true  
-vim.o.shiftwidth = 2      
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+vim.o.expandtab = true
+vim.o.smartindent = true
+vim.o.shiftwidth = 2
 
-vim.o.breakindent = true 
+vim.o.breakindent = true
 
 vim.o.hlsearch = true
 vim.o.incsearch = true
