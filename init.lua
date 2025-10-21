@@ -20,6 +20,8 @@ vim.call('plug#begin')
   Plug 'hrsh7th/cmp-path'
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
+
+  Plug 'olrtg/nvim-emmet'
 vim.call('plug#end')
 
 local hostname = vim.fn.hostname()
